@@ -1,1 +1,67 @@
+iimport os
+import csv
+import pandas as pd
+import numpy as np
 
+# Using custom file path because I couldn't figure out how to make path on my computer work properly
+
+csv_path = os.path.join(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\budget_data.csv')
+df = pd.read_csv(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\budget_data.csv')
+
+Total_Months = []
+Total = []
+
+
+
+
+with open(csv_path,newline="") as csvfile:
+    next(csvfile)
+    start = 0
+    csvreader = csv.reader(csvfile,delimiter =",")
+    for row in csvreader:
+        start += float(row[1])
+
+
+with open(csv_path,newline="") as csvfile:
+    next(csvfile)
+    csvreader = csv.reader(csvfile,delimiter =",")
+    data = list(csvreader)
+    row_count = len(data)
+   
+    
+df['shifted_values'] = df['Profit/Losses'].shift(1)
+df['difference'] = df['Profit/Losses'] - df['shifted_values']
+Average_Change = df['difference'].mean()
+
+
+increase_max = df['Profit/Losses'].max()
+increase_date = df.loc[df['Profit/Losses']==increase_max,'Date'].iloc[0]
+
+
+decrease_min = df['Profit/Losses'].min()
+decrease_date = df.loc[df['Profit/Losses']==decrease_min,'Date'].iloc[0]
+
+
+
+print('Total Months: ' + str(row_count))
+print('Total: {}'.format(start))
+print('Average Change: ' + str(Average_Change))   
+print('Greatest Increase in Profits: ' + str(increase_date) + ' ' + str(increase_max))
+print('Greatest Decrease in Profits: ' + str(decrease_date) + ' ' + str(decrease_min))
+
+value1 = 'Total Months: ' + str(row_count)
+value2 = 'Total: {}'.format(start)
+value3 = 'Average Change: ' + str(Average_Change)
+value4 = 'Greatest Increase in Profits: ' + str(increase_date) + ' ' + str(increase_max)
+value5 = 'Greatest Decrease in Profits: ' + str(decrease_date) + ' ' + str(decrease_min)
+
+# Using custom file path because I couldn't figure out how to make path on my computer work properly
+
+output_file = os.path.join(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\budget_data_final.csv')
+with open(output_file,"w",newline="") as datafile:
+    csvwriter = csv.writer(datafile, delimiter=',')
+    csvwriter.writerow([value1])
+    csvwriter.writerow([value2])
+    csvwriter.writerow([value3])
+    csvwriter.writerow([value4])
+    csvwriter.writerow([value5])
