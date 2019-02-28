@@ -1,0 +1,55 @@
+import os
+import csv
+import pandas as pd
+import numpy as np
+
+# Using custom file path because I couldn't figure out how to make path on my computer work properly
+
+csv_path2 = os.path.join(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\election_data.csv')
+df = pd.read_csv(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\election_data.csv')
+
+Total_Months = []
+Total = []
+
+        
+with open(csv_path2,newline="") as csvfile2:
+    next(csvfile2)
+    csvreader2 = csv.reader(csvfile2,delimiter =",")
+    data = list(csvreader2)
+    row_count = len(data)
+
+values = df['Candidate'].value_counts()
+
+df2 = pd.DataFrame(values)
+df2['Percentages'] = df2.Candidate / df2.Candidate.sum()
+final = df2.head()
+
+winner = df2['Candidate'].idxmax()
+
+
+print('Total Votes: ' + str(row_count))
+print('-----------------------------------')
+print(final)
+print('-----------------------------------')
+print('Winner: ' + str(winner))
+print('-----------------------------------')
+
+value1 = 'Total Votes: ' + str(row_count)
+value2 = '-----------------------------------'
+value3 = final
+value4 = '-----------------------------------'
+value5 = 'Winner: ' + str(winner)
+value6 = '-----------------------------------'
+
+
+# Using custom file path because I couldn't figure out how to make path on my computer work properly
+
+output_file = os.path.join(r'C:\Users\omar.aziz\Desktop\Rice Data Analytics\election_data_final.csv')
+with open(output_file,"w",newline="") as datafile:
+    csvwriter = csv.writer(datafile, delimiter=',')
+    csvwriter.writerow([value1])
+    csvwriter.writerow([value2])
+    csvwriter.writerow([value3])
+    csvwriter.writerow([value4])
+    csvwriter.writerow([value5])
+    csvwriter.writerow([value6])
